@@ -17,6 +17,8 @@ volatile int counter;
 
 const char *custom_ref = "cool";
 
+static lwmqtt_properties_t empty_props = lwmqtt_empty_props;
+
 static void message_arrived(lwmqtt_client_t *c, void *ref, lwmqtt_string_t t, lwmqtt_message_t m) {
   ASSERT_EQ(ref, custom_ref);
 
@@ -78,7 +80,7 @@ TEST(Client, PublishSubscribeQOS0) {
     msg.payload = payload;
     msg.payload_len = PAYLOAD_LEN;
 
-    err = lwmqtt_publish(&client, lwmqtt_string("lwmqtt"), msg, COMMAND_TIMEOUT);
+    err = lwmqtt_publish(&client, lwmqtt_string("lwmqtt"), msg, empty_props, COMMAND_TIMEOUT);
     ASSERT_EQ(err, LWMQTT_SUCCESS);
   }
 
@@ -137,7 +139,7 @@ TEST(Client, PublishSubscribeQOS1) {
     msg.payload = payload;
     msg.payload_len = PAYLOAD_LEN;
 
-    err = lwmqtt_publish(&client, lwmqtt_string("lwmqtt"), msg, COMMAND_TIMEOUT);
+    err = lwmqtt_publish(&client, lwmqtt_string("lwmqtt"), msg, empty_props, COMMAND_TIMEOUT);
     ASSERT_EQ(err, LWMQTT_SUCCESS);
   }
 
@@ -196,7 +198,7 @@ TEST(Client, PublishSubscribeQOS2) {
     msg.payload = payload;
     msg.payload_len = PAYLOAD_LEN;
 
-    err = lwmqtt_publish(&client, lwmqtt_string("lwmqtt"), msg, COMMAND_TIMEOUT);
+    err = lwmqtt_publish(&client, lwmqtt_string("lwmqtt"), msg, empty_props, COMMAND_TIMEOUT);
     ASSERT_EQ(err, LWMQTT_SUCCESS);
   }
 
@@ -254,7 +256,7 @@ TEST(Client, BufferOverflowProtection) {
   msg.payload = payload;
   msg.payload_len = PAYLOAD_LEN;
 
-  err = lwmqtt_publish(&client, lwmqtt_string("lwmqtt"), msg, COMMAND_TIMEOUT);
+  err = lwmqtt_publish(&client, lwmqtt_string("lwmqtt"), msg, empty_props, COMMAND_TIMEOUT);
   ASSERT_EQ(err, LWMQTT_SUCCESS);
 
   while (counter < 1) {
@@ -310,7 +312,7 @@ TEST(Client, BigBuffersAndPayload) {
     msg.payload = big_payload;
     msg.payload_len = BIG_PAYLOAD_LEN;
 
-    err = lwmqtt_publish(&client, lwmqtt_string("lwmqtt"), msg, COMMAND_TIMEOUT);
+    err = lwmqtt_publish(&client, lwmqtt_string("lwmqtt"), msg, empty_props, COMMAND_TIMEOUT);
     ASSERT_EQ(err, LWMQTT_SUCCESS);
   }
 
@@ -372,7 +374,7 @@ TEST(Client, MultipleSubscriptions) {
     msg.payload = payload;
     msg.payload_len = PAYLOAD_LEN;
 
-    err = lwmqtt_publish(&client, lwmqtt_string("lwmqtt"), msg, COMMAND_TIMEOUT);
+    err = lwmqtt_publish(&client, lwmqtt_string("lwmqtt"), msg, empty_props, COMMAND_TIMEOUT);
     ASSERT_EQ(err, LWMQTT_SUCCESS);
   }
 
